@@ -49,7 +49,6 @@ next-env.d.ts
 ER0000.sl2
 ER0000.sl2.*
 analyze-out.txt
-.pending-files.txt
 
 # 密钥与凭证 —— 任何形态都不提交
 # 实测教训：写"防止密钥泄露"的扫描脚本时，很容易把密钥本身当成
