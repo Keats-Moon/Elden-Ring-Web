@@ -32,6 +32,8 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# 但配置模板必须提交，否则新克隆的人不知道要配什么
+!.env.local.example
 
 # vercel
 .vercel
@@ -39,3 +41,25 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 存档文件（含个人游戏进度，绝不提交）
+*.sl2
+*.co2
+*.bak
+ER0000.sl2
+ER0000.sl2.*
+analyze-out.txt
+.pending-files.txt
+
+# 密钥与凭证 —— 任何形态都不提交
+# 实测教训：写"防止密钥泄露"的扫描脚本时，很容易把密钥本身当成
+# 匹配样本写进去，结果脚本自己成了泄漏源。所以宁可把这些形态一并挡住。
+*.pem
+*.key
+id_rsa*
+.env.local
+.env.production
+.env.development
+*credentials*.json
+*service-account*.json
+.token

@@ -1,0 +1,46 @@
+# Docker 构建上下文排除清单
+# 目的：把镜像从 ~1GB 压到 ~200MB，同时**确保个人数据绝不进入镜像**
+
+# 依赖与构建产物（镜像内会重新安装/构建）
+node_modules
+.next
+out
+build
+dist
+
+# 个人数据 —— 绝不能打进镜像
+*.sl2
+*.co2
+ER0000.sl2
+*.bak
+
+# 密钥与环境变量
+.env
+.env.*
+!.env.local.example
+
+# 版本控制与编辑器
+.git
+.gitignore
+.vscode
+.idea
+*.swp
+
+# 文档与调查脚本（运行时用不到）
+docs
+*.md
+!README.md
+scripts/analyze-save.mjs
+scripts/parse-save.mjs
+scripts/probe-*.mjs
+scripts/selftest-*.mjs
+scripts/dump-achievements.mjs
+scripts/verify-steam.mjs
+scripts/ts-alias-*.mjs
+scripts/run-with-env.mjs
+# 杂项
+*.log
+*.txt
+.DS_Store
+coverage
+*.tsbuildinfo

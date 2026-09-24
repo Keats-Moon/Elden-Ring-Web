@@ -3,10 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node scripts/dev-with-proxy.mjs dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "start": "node scripts/dev-with-proxy.mjs start",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit --incremental false",
+    "dump:achievements": "node scripts/dump-achievements.mjs",
+    "selftest:save": "node scripts/selftest-save.mjs",
+    "selftest:achievements": "node --import ./scripts/ts-alias-loader.mjs scripts/selftest-achievements.mjs",
+    "selftest:standalone": "node scripts/selftest-standalone.mjs",
+    "selftest": "npm run selftest:save && npm run selftest:achievements",
+    "verify:steam": "node scripts/run-with-env.mjs scripts/verify-steam.mjs",
+    "analyze:save": "node scripts/analyze-save.mjs"
   },
   "dependencies": {
     "next": "16.3.6",

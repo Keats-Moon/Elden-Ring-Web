@@ -1,26 +1,30 @@
 @import "tailwindcss";
 
+/*
+ * 本站固定采用深色主题：Steam 与艾尔登法环的视觉基调都是暗色，
+ * 不做跟随系统的浅色切换，避免浅色下成就图标与金色强调色的对比度失控。
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #0a0a0a;
+}
+
+/* 细滚动条，避免收集清单里出现粗大的系统滚动条 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #404040 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #404040;
+  border-radius: 4px;
 }

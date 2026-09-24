@@ -1,0 +1,177 @@
+{
+  "_readme": [
+    "艾尔登法环成就语义映射表。",
+    "键 = Steam 成就 apiName；值 = 我方语义分类 { category, bossName? }。",
+    "",
+    "为什么必须有这张表：Steam 的 GetSchemaForGame 只返回成就的显示名与描述，",
+    "**不告诉你这个成就对应哪个 Boss**。而且真实成就名就是 Boss 名本身（如「火焰巨人」），",
+    "不含「击败」这类动词 —— 纯靠名称关键词匹配会把 31 个 Boss 成就全部漏判成 other。",
+    "因此这里用显式映射，而不是启发式。",
+    "",
+    "生成方式：npm run dump:achievements（从真实 Steam 接口导出 apiName 与显示名），",
+    "再对 category / bossName 做人工确认。",
+    "",
+    "分类含义：",
+    "  boss        = 击败某个 Boss 的成就（bossName 为 Boss 名）",
+    "  ending      = 结局 / 路线终点",
+    "  progression = 主线推进与系统里程碑（圆桌厅堂、大卢恩等）",
+    "  collection  = 收集类（传说武器 / 骨灰 / 魔法祷告 / 护符）",
+    "生成时间：2026-09-24T09:35:17.480Z"
+  ],
+  "ACH00": {
+    "category": "ending"
+  },
+  "ACH01": {
+    "category": "ending"
+  },
+  "ACH02": {
+    "category": "ending"
+  },
+  "ACH03": {
+    "category": "ending"
+  },
+  "ACH04": {
+    "category": "boss",
+    "bossName": "“碎片君王”葛瑞克"
+  },
+  "ACH05": {
+    "category": "boss",
+    "bossName": "“碎片君王”拉塔恩"
+  },
+  "ACH06": {
+    "category": "boss",
+    "bossName": "“碎片君王”蒙葛特"
+  },
+  "ACH07": {
+    "category": "boss",
+    "bossName": "“碎片君王”拉卡德"
+  },
+  "ACH08": {
+    "category": "boss",
+    "bossName": "“碎片君王”玛莲妮亚"
+  },
+  "ACH09": {
+    "category": "boss",
+    "bossName": "“碎片君王”蒙格"
+  },
+  "ACH10": {
+    "category": "boss",
+    "bossName": "“黑剑”玛利喀斯"
+  },
+  "ACH11": {
+    "category": "boss",
+    "bossName": "战士荷莱·露"
+  },
+  "ACH12": {
+    "category": "boss",
+    "bossName": "“龙王”普拉顿桑克斯"
+  },
+  "ACH13": {
+    "category": "collection"
+  },
+  "ACH14": {
+    "category": "collection"
+  },
+  "ACH15": {
+    "category": "collection"
+  },
+  "ACH16": {
+    "category": "collection"
+  },
+  "ACH17": {
+    "category": "collection"
+  },
+  "ACH18": {
+    "category": "boss",
+    "bossName": "“满月女王”蕾娜菈"
+  },
+  "ACH19": {
+    "category": "boss",
+    "bossName": "“死龙”弗尔桑克斯"
+  },
+  "ACH20": {
+    "category": "boss",
+    "bossName": "神皮双人组"
+  },
+  "ACH21": {
+    "category": "boss",
+    "bossName": "火焰巨人"
+  },
+  "ACH22": {
+    "category": "boss",
+    "bossName": "诺克史黛拉的龙人士兵"
+  },
+  "ACH23": {
+    "category": "boss",
+    "bossName": "祖灵之王"
+  },
+  "ACH24": {
+    "category": "boss",
+    "bossName": "英雄石像鬼"
+  },
+  "ACH25": {
+    "category": "boss",
+    "bossName": "“恶兆妖鬼”玛尔基特"
+  },
+  "ACH26": {
+    "category": "boss",
+    "bossName": "拉达冈的红狼"
+  },
+  "ACH27": {
+    "category": "boss",
+    "bossName": "神皮贵族"
+  },
+  "ACH28": {
+    "category": "boss",
+    "bossName": "“熔岩土龙”马卡尔"
+  },
+  "ACH29": {
+    "category": "boss",
+    "bossName": "“初始之王”葛孚雷"
+  },
+  "ACH30": {
+    "category": "boss",
+    "bossName": "“恶兆之子”蒙格"
+  },
+  "ACH31": {
+    "category": "boss",
+    "bossName": "仿身泪滴"
+  },
+  "ACH32": {
+    "category": "boss",
+    "bossName": "“圣树骑士”罗蕾塔"
+  },
+  "ACH33": {
+    "category": "boss",
+    "bossName": "“黑暗弃子”艾丝缇"
+  },
+  "ACH34": {
+    "category": "boss",
+    "bossName": "狮子混种"
+  },
+  "ACH35": {
+    "category": "boss",
+    "bossName": "禁卫骑士罗蕾塔"
+  },
+  "ACH36": {
+    "category": "boss",
+    "bossName": "“铁棘”艾隆梅尔"
+  },
+  "ACH37": {
+    "category": "boss",
+    "bossName": "祖灵"
+  },
+  "ACH38": {
+    "category": "boss",
+    "bossName": "老将尼奥"
+  },
+  "ACH39": {
+    "category": "progression"
+  },
+  "ACH40": {
+    "category": "progression"
+  },
+  "ACH41": {
+    "category": "ending"
+  }
+}
