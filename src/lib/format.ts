@@ -24,36 +24,49 @@ export function formatPlaytime(minutes: number | undefined): string {
 }
 
 /**
- * 允许代理的 Steam CDN 根域。
+ * 允许代理的 Steam 图片域名。
  *
- * `steamstatic.com` 是 Valve 自有的 CDN 域，其全部子域都归 Valve 控制，
- * 因此按**域后缀**放行既安全又不用逐一列举 —— 而逐一列举正是之前的 bug：
- * 白名单里只有 `community.cloudflare.steamstatic.com`，
- * 却漏了成就图标实际所在的 `cdn.cloudflare.steamstatic.com`，
- * 导致图标被静默丢弃（proxiedImageUrl 返回空字符串，图标不渲染）。
+ * ⚠️ 这份清单是用**真实数据核对**出来的，不是凭印象写的。同一个问题踩了两次：
+ *
+ *   1. 最初只列了头像的域 + `community.cloudflare.steamstatic.com`，
+ *      漏了成就图标域 —— 图标被静默丢弃，界面不报错、只是没图。
+ *   2. 第二次想当然改成"`steamstatic.com` 后缀匹配" —— **依然是错的**：
+ *      实测 Steam 成就图标托管在 **`steamcdn-a.akamaihd.net`**，
+ *      跟 `steamstatic.com` 毫无关系。
+ *
+ * 结论：改为**明确列举**，每一项都经过实测。要新增域名必须先用真实 URL 验证，
+ * 不要再靠推测。
  */
-const ALLOWED_CDN_SUFFIXES = ['.steamstatic.com'];
+const ALLOWED_STEAM_IMAGE_HOSTS = new Set([
+  // 成就图标（实测：GetSchemaForGame 返回的 icon / icongray 就在这里）
+  'steamcdn-a.akamaihd.net',
+  // 头像与社区图片
+  'avatars.steamstatic.com',
+  'avatars.cloudflare.steamstatic.com',
+  'community.cloudflare.steamstatic.com',
+  'cdn.cloudflare.steamstatic.com',
+  'cdn.akamai.steamstatic.com',
+  'shared.akamai.steamstatic.com',
+  'shared.cloudflare.steamstatic.com',
+]);
 
-function isAllowedSteamCdn(url: string): boolean {
-  let host: string;
+function isAllowedSteamImage(url: string): boolean {
   try {
     const parsed = new URL(url);
     if (parsed.protocol !== 'https:') return false;
-    host = parsed.hostname;
+    return ALLOWED_STEAM_IMAGE_HOSTS.has(parsed.hostname);
   } catch {
     return false;
   }
-  // 注意用带点的后缀比较，避免 evil-steamstatic.com 这类域名被误放行
-  return ALLOWED_CDN_SUFFIXES.some((suffix) => host === suffix.slice(1) || host.endsWith(suffix));
 }
 
 /**
- * Steam 社区图片走本站代理，避免直连 Steam CDN 的跨域与防盗链问题。
- * 只允许 Steam 官方 CDN 域，防止被当成开放代理滥用（SSRF 防护）。
+ * Steam 图片走本站代理，避免直连 Steam CDN 的跨域与防盗链问题。
+ * 只允许 Steam 官方图片域，防止被当成开放代理滥用（SSRF 防护）。
  */
 export function proxiedImageUrl(original: string | undefined): string {
   if (!original) return '';
-  if (!isAllowedSteamCdn(original)) return '';
+  if (!isAllowedSteamImage(original)) return '';
   return `/api/img?url=${encodeURIComponent(original)}`;
 }
 

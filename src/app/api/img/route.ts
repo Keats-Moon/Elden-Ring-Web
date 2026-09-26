@@ -9,22 +9,25 @@ export const dynamic = 'force-dynamic';
  * 为什么需要：Steam 的头像/成就图标在浏览器直连时可能遇到跨域或防盗链，
  * 走同源代理最稳。
  *
- * 安全：**只允许** Steam 官方 CDN 域，否则本站就变成了一个开放代理
+ * 安全：**只允许**明确列举的 Steam 官方图片域，否则本站就变成了开放代理
  * （可被用来探测内网 / 洗流量）。
  *
- * ⚠️ 实测教训：最初这里逐个子域列举，结果漏了成就图标实际所在的
- * `cdn.cloudflare.steamstatic.com`，导致成就图标全部 403。
- * 改为按**域后缀**校验：`steamstatic.com` 是 Valve 自有 CDN 域，
- * 其所有子域都归 Valve 控制，按后缀放行既安全又不会漏。
+ * ⚠️ 这份清单来自实测，不是推测。同一处踩过两次：
+ *   1. 漏了成就图标域 → 图标被 403，界面无图且不报错；
+ *   2. 想当然改成 `steamstatic.com` 后缀匹配 —— 仍然错，因为成就图标
+ *      实际托管在 **`steamcdn-a.akamaihd.net`**。
+ * 要新增域名，请先用真实 URL 验证它确实是 Steam 的图片域。
  */
-const ALLOWED_CDN_SUFFIXES = ['.steamstatic.com'];
-
-function isAllowedHost(hostname: string): boolean {
-  // 用带点的后缀比较，避免 evil-steamstatic.com 这类域名被误放行
-  return ALLOWED_CDN_SUFFIXES.some(
-    (suffix) => hostname === suffix.slice(1) || hostname.endsWith(suffix),
-  );
-}
+const ALLOWED_STEAM_IMAGE_HOSTS = new Set([
+  'steamcdn-a.akamaihd.net',
+  'avatars.steamstatic.com',
+  'avatars.cloudflare.steamstatic.com',
+  'community.cloudflare.steamstatic.com',
+  'cdn.cloudflare.steamstatic.com',
+  'cdn.akamai.steamstatic.com',
+  'shared.akamai.steamstatic.com',
+  'shared.cloudflare.steamstatic.com',
+]);
 
 export async function GET(req: Request) {
   const raw = new URL(req.url).searchParams.get('url');
@@ -39,7 +42,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'url 不是合法地址' }, { status: 400 });
   }
 
-  if (target.protocol !== 'https:' || !isAllowedHost(target.hostname)) {
+  if (target.protocol !== 'https:' || !ALLOWED_STEAM_IMAGE_HOSTS.has(target.hostname)) {
     return NextResponse.json(
       { error: `只允许代理 Steam 官方图片域名，收到：${target.hostname}` },
       { status: 403 },
